@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
-import prompts from 'prompts'
-import { State } from "./state";
+import { Write } from "./helpers/write.js";
+import { State } from "./state/state.js";
 
 export abstract class Event {
   abstract name: string;
@@ -15,6 +15,7 @@ export abstract class Event {
 
   async run(state: State): Promise<EventOutcome> {
     await this.intro(state);
+    Write.gap();
 
     const validOutcomes = [...this.defaultOutcomes];
 
@@ -24,6 +25,7 @@ export abstract class Event {
     }
 
     const outcome = await this.selectOutcome(validOutcomes);
+    Write.gap();
     await outcome.run(state);
 
     return outcome;
