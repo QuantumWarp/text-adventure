@@ -1,6 +1,12 @@
 import inquirer from "inquirer";
+import { Chance, chanceSelect } from "./helpers/chance.js";
 import { Write } from "./helpers/write.js";
 import { State } from "./state/state.js";
+
+export interface Event {
+  chance: Chance;
+  test: string;
+}
 
 export abstract class Event {
   abstract name: string;
@@ -8,7 +14,6 @@ export abstract class Event {
   abstract selectPrompt: string;
   abstract choices: EventChoice[];
 
-  abstract chance(state: State): number;
   abstract intro(state: State): Promise<void>;
   
   defaultOutcomes: EventOutcome[] = [];
@@ -24,9 +29,11 @@ export abstract class Event {
       validOutcomes.push(...choice.outcomes);
     }
 
-    const outcome = await this.selectOutcome(validOutcomes);
+    const outcome = chanceSelect(validOutcomes, state);
     Write.gap();
     await outcome.run(state);
+    await Write.waitForUser();
+    Write.clear();
 
     return outcome;
   }
@@ -42,10 +49,6 @@ export abstract class Event {
 
     return this.choices.find((x) => x.name === answer[this.selectPrompt]);
   }
-
-  private async selectOutcome(outcomes: EventOutcome[]): Promise<EventOutcome> {
-    return outcomes[0];
-  }
 }
 
 export interface EventChoice {
@@ -57,6 +60,6 @@ export interface EventChoice {
 export interface EventOutcome {
   name: string;
   run(state: State): Promise<void>;
-  chance?(state: State): number;
+  chance?: Chance;
 }
 

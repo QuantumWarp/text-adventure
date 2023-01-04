@@ -3,7 +3,6 @@ import { Write } from "../helpers/write.js";
 
 export class BrokenDownCart extends Event {
   name = 'Broken Down Cart';
-  chance: () => 1;
 
   async intro() {
     await Write.standard('In the distance a shape begins to come into view.');

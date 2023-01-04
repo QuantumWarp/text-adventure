@@ -3,7 +3,7 @@ import ansiRegex from 'ansi-regex';
 import { sleep } from "./utils.js";
 
 export async function slowType(message: string, characterDelay = 4, eolDelay = 500): Promise<void> {
-  let leftToType = chalk.blue.bold(message + '\r\n');
+  let leftToType = message + '\r\n';
   let skipped = false;
 
   const writeRemainder = () => {
