@@ -6,7 +6,7 @@ const itemsUnstyled = {
 };
 
 export const itemsStyle = (x: string) => {
-  chalk.yellow(x);
+  return chalk.yellow(x);
 };
 
 export const items = copyObjStrings(

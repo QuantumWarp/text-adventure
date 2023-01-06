@@ -6,7 +6,7 @@ const statsUnstyled = {
 };
 
 export const statsStyle = (x: string) => {
-  chalk.green(x);
+  return chalk.green(x);
 };
 
 export const stats = copyObjStrings(

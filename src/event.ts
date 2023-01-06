@@ -1,11 +1,13 @@
 import inquirer from "inquirer";
 import { Chance, chanceSelect } from "./helpers/chance.js";
+import { Format } from "./helpers/formatter.js";
 import { Write } from "./helpers/write.js";
 import { State } from "./state/state.js";
 
 export interface Event {
   chance: Chance;
-  test: string;
+  intro?(state: State): Promise<void>;
+  outro?(state: State): Promise<void>;
 }
 
 export abstract class Event {
@@ -13,14 +15,17 @@ export abstract class Event {
 
   abstract selectPrompt: string;
   abstract choices: EventChoice[];
-
-  abstract intro(state: State): Promise<void>;
   
   defaultOutcomes: EventOutcome[] = [];
 
   async run(state: State): Promise<EventOutcome> {
-    await this.intro(state);
+    Write.instant(Format.title(this.name));
     Write.gap();
+
+    if (this.intro) {
+      await this.intro(state);
+      Write.gap();
+    }
 
     const validOutcomes = [...this.defaultOutcomes];
 
@@ -31,7 +36,14 @@ export abstract class Event {
 
     const outcome = chanceSelect(validOutcomes, state);
     Write.gap();
+
     await outcome.run(state);
+
+    if (this.outro) {
+      await this.outro(state);
+      Write.gap();
+    }
+
     await Write.waitForUser();
     Write.clear();
 

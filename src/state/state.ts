@@ -4,6 +4,12 @@ import { Stat } from "./stat.js";
 export class State {
   journey = new Journey();
 
+  basics = {
+    name: '',
+    gender: '',
+    background: '',
+  };
+
   stats = {
     health: new Stat(100, 0, 100),
     mana: new Stat(100, 0, 100),

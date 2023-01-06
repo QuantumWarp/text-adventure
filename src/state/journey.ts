@@ -7,7 +7,12 @@ export class Journey {
     this.history.push({ event, outcome });
   }
 
-  find(name: string): EventOutcome[] {
+  visited(name: string): boolean {
+    return Boolean(this.history
+      .find((x) => x.event.name === name));
+  }
+
+  search(name: string): EventOutcome[] {
     return this.history
       .filter((x) => x.event.name === name)
       .map((x) => x.outcome);
