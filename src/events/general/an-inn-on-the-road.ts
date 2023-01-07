@@ -1,5 +1,5 @@
-import { Event, EventChoice } from "../event.js";
-import { Write } from "../helpers/write.js";
+import { Event, EventChoice } from "../../event.js";
+import { Write } from "../../helpers/write.js";
 
 export class Tavern extends Event {
   name = 'Tavern';
