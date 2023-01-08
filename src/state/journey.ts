@@ -1,9 +1,6 @@
-import { places } from "../lists/places.js";
 import { Event, EventOutcome } from "../event.js";
 
 export class Journey {
-  location = places.village;
-
   history: { event: Event, outcome: EventOutcome }[] = [];
 
   add(event: Event, outcome: EventOutcome): void {

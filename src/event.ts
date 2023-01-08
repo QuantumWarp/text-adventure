@@ -6,7 +6,6 @@ import { State } from "./state/state.js";
 
 export interface Event {
   chance: Chance;
-  location?: string;
   intro?(state: State): Promise<void>;
   outro?(state: State): Promise<void>;
 }

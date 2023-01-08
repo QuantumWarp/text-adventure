@@ -1,15 +1,12 @@
 import chalk from "chalk";
-import { copyObjStrings } from "../helpers/utils.js";
 
-const itemsUnstyled = {
+const items = {
 
 };
 
-export const itemsStyle = (x: string) => {
+export const itemStyle = (x: string) => {
   return chalk.yellow(x);
 };
 
-export const items = copyObjStrings(
-  itemsUnstyled,
-  itemsStyle,
-);
+type Keys = keyof typeof items;
+export type Item = typeof items[Keys];

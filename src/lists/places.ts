@@ -1,7 +1,6 @@
 import chalk from "chalk";
-import { copyObjStrings } from "../helpers/utils.js";
 
-const placesUnstyled = {
+export const places = {
   village: 'Village',
   theMountains: 'The Mountains',
   forestOfNithe: 'Forest of Nithe',
@@ -12,13 +11,11 @@ const placesUnstyled = {
   easternPath: 'Eastern Path to the Forest of Nithe',
   southernPath: 'Southern Path to the Diseased Lands',
   westernPath: 'Western Path to Athos, City of Sails',
-};
+} as const;
 
-export const placesStyle = (x: string) => {
+export const placeStyle = (x: string) => {
   return chalk.magenta(x);
 };
 
-export const places = copyObjStrings(
-  placesUnstyled,
-  placesStyle,
-);
+type Keys = keyof typeof places;
+export type Place = typeof places[Keys];

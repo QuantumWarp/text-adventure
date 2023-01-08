@@ -22,10 +22,11 @@ export class Game {
   private writeStatus(): void {
     const nameField = Format.fixedWidth(`Name: ${this.state.basics.name}`);
     const backgroundField = Format.fixedWidth(`Background: ${this.state.basics.background}`);
+    const locationField = Format.fixedWidth(`Location: ${this.state.location.current}`);
     const healthField = Format.fixedWidth(`Health: ${this.state.stats.health.value}/${this.state.stats.health.maximum}`);
     const moneyField = Format.fixedWidth(`Money: ${this.state.stats.money.value}`);
 
-    Write.instant(nameField + backgroundField);
+    Write.instant(nameField + backgroundField + locationField);
     Write.instant(healthField + moneyField);
     Write.gap()
   }
