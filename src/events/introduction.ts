@@ -3,13 +3,17 @@ import { State } from "../state/state.js";
 import { Event, EventChoice } from "../event.js";
 import { Write } from "../helpers/write.js";
 import { places, placeStyle } from "../lists/places.js";
+import { Checker } from "../helpers/checker.js";
+import { ChanceVal } from "../helpers/chance.js";
 
 export class Introduction extends Event {
   name = 'The Road to Adventure';
 
   chance = (state: State): number =>  {
-    if (state.journey.visited(this.name)) return 0;
-    return Infinity;
+    if (Checker.isRepeat(state, this)) {
+      return ChanceVal.Impossible;
+    }
+    return ChanceVal.Certain;
   }
 
   async intro(state: State) {
@@ -63,7 +67,7 @@ const north: EventChoice = {
   name: 'North',
   outcomes: [{
     name: 'North',
-    run: async (state: State) => {
+    async run(state: State) {
       state.location.set(places.northernPath, places.theMountains);
       await Write.standard('You choose the Northern path.');
       await Write.standard('You have heard stories of dwarves and dragons dwelling within snow capped mountains.');
@@ -76,7 +80,7 @@ const east: EventChoice = {
   name: 'East',
   outcomes: [{
     name: 'East',
-    run: async (state: State) => {
+    async run(state: State) {
       state.location.set(places.easternPath, places.forestOfNithe);
       await Write.standard('You choose the Eastern path.');
       await Write.standard('Tales of all manner of creatures within the forest have piqued your interest.');
@@ -88,7 +92,7 @@ const south: EventChoice = {
   name: 'South',
   outcomes: [{
     name: 'South',
-    run: async (state: State) => {
+    async run(state: State) {
       state.location.set(places.southernPath, places.theMountains);
       await Write.standard('You choose the Southern path.');
       await Write.standard('The death and decay from the South seems to edge ever closer each day.');
@@ -101,7 +105,7 @@ const west: EventChoice = {
   name: 'West',
   outcomes: [{
     name: 'West',
-    run: async (state: State) => {
+    async run(state: State) {
       state.location.set(places.westernPath, places.athosCityOfSails);
       await Write.standard('You choose the Western path.');
       await Write.standard('The City has always been intriguing, you are sure you will find the bustling port to your liking.');

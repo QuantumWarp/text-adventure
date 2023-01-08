@@ -13,6 +13,13 @@ export const places = {
   westernPath: 'Western Path to Athos, City of Sails',
 } as const;
 
+export const generalPaths = [
+  places.northernPath,
+  places.easternPath,
+  places.southernPath,
+  places.westernPath,
+];
+
 export const placeStyle = (x: string) => {
   return chalk.magenta(x);
 };

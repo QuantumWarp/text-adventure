@@ -7,7 +7,7 @@ import { State } from "./state/state.js";
 export interface Event {
   chance: Chance;
   intro?(state: State): Promise<void>;
-  outro?(state: State): Promise<void>;
+  outro?(state: State, outcome: EventOutcome): Promise<void>;
 }
 
 export abstract class Event {
@@ -40,7 +40,7 @@ export abstract class Event {
     await outcome.run(state);
 
     if (this.outro) {
-      await this.outro(state);
+      await this.outro(state, outcome);
       Write.gap();
     }
 
@@ -65,13 +65,13 @@ export abstract class Event {
 
 export interface EventChoice {
   name: string;
-  outcomes: EventOutcome[];
   condition?(state: State): boolean;
+  outcomes: EventOutcome[];
 }
 
 export interface EventOutcome {
   name: string;
-  run(state: State): Promise<void>;
   chance?: Chance;
+  run(state: State): Promise<void>;
 }
 

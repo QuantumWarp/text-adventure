@@ -1,5 +1,17 @@
 import { State } from "../state/state.js";
 
+export enum ChanceVal {
+  Certain = Infinity,
+  AlmostCertain = 100,
+  VeryLikely = 20,
+  Likely = 5,
+  Standard = 1,
+  Unlikely = 0.5,
+  VeryUnlikely =  0.1,
+  AlmostImpossible = 0.02,
+  Impossible = 0,
+}
+
 export type Chance = undefined | number | ((state: State) => number);
 
 export const chanceSelect = <T extends { chance?: Chance }>(
@@ -10,25 +22,25 @@ export const chanceSelect = <T extends { chance?: Chance }>(
     chance: resolveChance(x.chance, state) 
   }));
 
-  const allZero = !chances.find((x) => x.chance !== 0);
-  const anyInfinite = !!chances.find((x) => x.chance === Infinity);
+  const allImpossible = !chances.find((x) => x.chance !== ChanceVal.Impossible);
+  const anyCertain = !!chances.find((x) => x.chance === ChanceVal.Certain);
   
-  if (anyInfinite) {
+  if (anyCertain) {
     chances = chances
       .filter((x) => x.chance === Infinity)
-      .map((x) => ({ ...x, chance: 1 }));
-  } else if (allZero) {
+      .map((x) => ({ ...x, chance: ChanceVal.Standard }));
+  } else if (allImpossible) {
     chances = chances
-      .map((x) => ({ ...x, chance: 1 }));
+      .map((x) => ({ ...x, chance: ChanceVal.Standard }));
   } else {
-    chances = chances.filter((x) => x.chance !== 0);
+    chances = chances.filter((x) => x.chance !== ChanceVal.Impossible);
   }
   
   return checkComparableChances(chances);
 };
 
 const resolveChance = (chance: Chance, state: State): number => {
-  if (chance === undefined) return 1;
+  if (chance === undefined) return ChanceVal.Standard;
   if (typeof chance === "number") return chance;
   return chance(state);
 };
