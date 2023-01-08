@@ -1,16 +1,16 @@
 import chalk from "chalk";
 
 export const places = {
-  village: 'Village',
-  theMountains: 'The Mountains',
-  forestOfNithe: 'Forest of Nithe',
-  diseasedLands: 'Diseased Lands',
-  athos: 'Athos',
-  athosCityOfSails: 'Athos, City of Sails',
-  northernPath: 'Northern Path to The Mountains',
-  easternPath: 'Eastern Path to the Forest of Nithe',
-  southernPath: 'Southern Path to the Diseased Lands',
-  westernPath: 'Western Path to Athos, City of Sails',
+  village: "Village",
+  theMountains: "The Mountains",
+  forestOfNithe: "Forest of Nithe",
+  diseasedLands: "Diseased Lands",
+  athos: "Athos",
+  athosCityOfSails: "Athos, City of Sails",
+  northernPath: "Northern Path to The Mountains",
+  easternPath: "Eastern Path to the Forest of Nithe",
+  southernPath: "Southern Path to the Diseased Lands",
+  westernPath: "Western Path to Athos, City of Sails",
 } as const;
 
 export const generalPaths = [
@@ -25,4 +25,4 @@ export const placeStyle = (x: string) => {
 };
 
 type Keys = keyof typeof places;
-export type Place = typeof places[Keys];
+export type Place = (typeof places)[Keys];

@@ -13,7 +13,8 @@ export class Format {
       const space = width - length;
       const odd = space % 2 === 1;
       const dashCount = Math.floor(space / 2);
-      title = '-'.repeat(dashCount + (odd ? 1 : 0)) + title + '-'.repeat(dashCount);
+      title =
+        "-".repeat(dashCount + (odd ? 1 : 0)) + title + "-".repeat(dashCount);
     }
     return chalk.bold.blue(`---${title}---`);
   }
@@ -21,6 +22,6 @@ export class Format {
   static fixedWidth(text: string, width = 20): string {
     const length = removeAnsi(text).length;
     if (length >= width) return text;
-    return text + ' '.repeat(width - length);
+    return text + " ".repeat(width - length);
   }
 }

@@ -15,7 +15,7 @@ export abstract class Event {
 
   abstract selectPrompt: string;
   abstract choices: EventChoice[];
-  
+
   defaultOutcomes: EventOutcome[] = [];
 
   async run(state: State): Promise<EventOutcome> {
@@ -51,13 +51,15 @@ export abstract class Event {
   }
 
   private async presentChoice(state: State): Promise<EventChoice> {
-    const answer = await inquirer.prompt([{
-      name: this.selectPrompt,
-      type: "list",
-      choices: this.choices
-        .filter((x) => !x.condition || x.condition(state))
-        .map((x) => x.name),
-    }]);
+    const answer = await inquirer.prompt([
+      {
+        name: this.selectPrompt,
+        type: "list",
+        choices: this.choices
+          .filter((x) => !x.condition || x.condition(state))
+          .map((x) => x.name),
+      },
+    ]);
 
     return this.choices.find((x) => x.name === answer[this.selectPrompt]);
   }
@@ -74,4 +76,3 @@ export interface EventOutcome {
   chance?: Chance;
   run(state: State): Promise<void>;
 }
-

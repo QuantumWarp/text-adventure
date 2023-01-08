@@ -8,9 +8,9 @@ export class State {
   location = new Location();
 
   basics = {
-    name: '',
-    gender: '',
-    background: '',
+    name: "",
+    gender: "",
+    background: "",
   };
 
   stats = {

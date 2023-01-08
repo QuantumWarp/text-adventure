@@ -6,7 +6,7 @@ export class Location {
   current: Place = places.village;
   to: Place;
   subLocation: Place;
-  
+
   set(current: Place, to?: Place): void {
     if (this.subLocation) {
       this.history.push(this.subLocation);

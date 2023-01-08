@@ -5,5 +5,5 @@ export async function sleep(delayMs: number) {
 }
 
 export const removeAnsi = (text: string): string => {
-  return text.replace(ansiRegex(), '');
-}
+  return text.replace(ansiRegex(), "");
+};

@@ -1,18 +1,22 @@
-import readline from 'readline';
+import readline from "readline";
 import { slowType } from "./slow-type.js";
 
 export class Write {
-  static async standard(message: string): Promise<void> {
-    await slowType(message)
+  static async standard(...messages: string[]): Promise<void> {
+    for (const message of messages) {
+      await slowType(message);
+    }
   }
 
-  static instant(message: string): void {
-    console.log(message);
+  static instant(...messages: string[]): void {
+    for (const message of messages) {
+      console.log(message);
+    }
   }
 
-  static gap(amount: number = 1): void {
-    for(var i = 0; i < amount; i++){
-      console.log('');
+  static gap(amount = 1): void {
+    for (let i = 0; i < amount; i++) {
+      console.log("");
     }
   }
 
@@ -25,10 +29,12 @@ export class Write {
       input: process.stdin,
       output: process.stdout,
     });
-    
-    return new Promise<void>((resolve) => rl.question('', () => {
-      rl.close();
-      resolve();
-    }));
+
+    return new Promise<void>((resolve) =>
+      rl.question("", () => {
+        rl.close();
+        resolve();
+      })
+    );
   }
 }
