@@ -1,6 +1,6 @@
 import { State } from "../state/state.js";
 import { Event, EventChoice } from "../event.js";
-import { Write } from "../helpers/write.js";
+import { Write } from "../writers/writer.js";
 import { Checker } from "../helpers/checker.js";
 import { ChanceVal } from "../helpers/chance.js";
 

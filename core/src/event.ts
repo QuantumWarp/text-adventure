@@ -1,7 +1,8 @@
+/* eslint-disable prettier/prettier */
 import inquirer from "inquirer";
 import { Chance, chanceSelect } from "./helpers/chance.js";
 import { Format } from "./helpers/formatter.js";
-import { Write } from "./helpers/write.js";
+import { Writer } from "./writers/writer.js";
 import { State } from "./state/state.js";
 
 export interface Event {
@@ -18,13 +19,15 @@ export abstract class Event {
 
   defaultOutcomes: EventOutcome[] = [];
 
+  constructor(protected writer: Writer) {}
+
   async run(state: State): Promise<EventOutcome> {
-    Write.instant(Format.title(this.name));
-    Write.gap();
+    this.writer.instant(Format.title(this.name));
+    this.writer.gap();
 
     if (this.intro) {
       await this.intro(state);
-      Write.gap();
+      this.writer.gap();
     }
 
     const validOutcomes = [...this.defaultOutcomes];
@@ -35,17 +38,17 @@ export abstract class Event {
     }
 
     const outcome = chanceSelect(validOutcomes, state);
-    Write.gap();
+    this.writer.gap();
 
     await outcome.run(state);
 
     if (this.outro) {
       await this.outro(state, outcome);
-      Write.gap();
+      this.writer.gap();
     }
 
-    await Write.waitForUser();
-    Write.clear();
+    await this.writer.waitForUser();
+    this.writer.clear();
 
     return outcome;
   }
@@ -71,8 +74,24 @@ export interface EventChoice {
   outcomes: EventOutcome[];
 }
 
-export interface EventOutcome {
+interface IEventOutcome {
   name: string;
   chance?: Chance;
-  run(state: State): Promise<void>;
+  run: (state: State) => Promise<void>;
 }
+
+export class EventOutcome {
+
+  constructor(
+    public name: string,
+    public run: (state: State) => Promise<void>,
+    public chance?: Chance,
+  ) { }
+}
+
+const test = new EventOutcome(
+  'test',
+  (state: State) => {
+    writ
+  },
+);

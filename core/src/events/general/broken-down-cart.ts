@@ -1,6 +1,5 @@
 import { State } from "../../state/state.js";
 import { Event, EventChoice } from "../../event.js";
-import { Write } from "../../helpers/write.js";
 import { Checker } from "../../helpers/checker.js";
 import { ChanceVal } from "../../helpers/chance.js";
 import { generalPaths } from "../../lists/places.js";
@@ -19,7 +18,7 @@ export class BrokenDownCart extends Event {
   };
 
   async intro() {
-    await Write.standard(
+    await this.writer.standard(
       "In the distance a shape begins to come into view.",
       "Upon getting closer you see a man standing beside a broken down cart."
     );
@@ -35,13 +34,13 @@ const helpFix: EventChoice = {
     {
       name: "Success",
       async run() {
-        await Write.standard("You help fix the cart");
+        await this.writer.standard("You help fix the cart");
       },
     },
     {
       name: "Failure",
       async run() {
-        await Write.standard("You are bad at fixing things");
+        await this.writer.standard("You are bad at fixing things");
       },
     },
   ],
@@ -53,7 +52,7 @@ const leave: EventChoice = {
     {
       name: "Leave",
       async run() {
-        await Write.standard("You leave");
+        await this.writer.standard("You leave");
       },
     },
   ],

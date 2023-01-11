@@ -1,5 +1,5 @@
 import ansiRegex from "ansi-regex";
-import { sleep } from "./utils.js";
+import { sleep } from "../helpers/utils.js";
 
 export async function slowType(
   message: string,

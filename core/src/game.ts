@@ -1,19 +1,29 @@
 import { State } from "./state/state.js";
+import { Event } from "./event.js";
 import { events } from "./lists/events.js";
 import { chanceSelect } from "./helpers/chance.js";
-import { Write } from "./helpers/write.js";
+import { Writer } from "./writers/writer.js";
 import { Format } from "./helpers/formatter.js";
+import { GameOptions } from "./options.js";
 
 export class Game {
-  state = new State();
+  events: Event[];
+  state: State;
+  writer: Writer;
+
+  constructor(options: GameOptions) {
+    this.state = new State();
+    this.writer = new Writer(options.interface);
+    this.events = events.map((E) => new E(this.writer));
+  }
 
   async run() {
-    Write.clear();
+    this.writer.clear();
 
     while (!this.state.ended) {
       this.writeStatus();
 
-      const event = chanceSelect(events, this.state);
+      const event = chanceSelect(this.events, this.state);
       const outcome = await event.run(this.state);
       this.state.journey.add(event, outcome);
     }
@@ -36,12 +46,14 @@ export class Game {
       `Money: ${this.state.stats.money.value}`
     );
 
-    Write.instant(nameField + backgroundField + locationField);
-    Write.instant(healthField + moneyField);
-    Write.gap();
+    this.writer.instant(
+      nameField + backgroundField + locationField,
+      healthField + moneyField
+    );
+    this.writer.gap();
   }
 
   private writeSummary(): void {
-    Write.standard("Dummy summary");
+    this.writer.standard("Dummy summary");
   }
 }
