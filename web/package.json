@@ -10,6 +10,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "text-adventure": "file:../core",
     "typescript": "^4.9.4",
     "xterm": "^5.1.0",
     "xterm-addon-fit": "^0.7.0"
