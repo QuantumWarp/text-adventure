@@ -1,11 +1,12 @@
 import { State } from "../../state/state.js";
-import { Event, EventChoice } from "../../event.js";
+import { Event } from "../../event.js";
 import { Checker } from "../../helpers/checker.js";
 import { ChanceVal } from "../../helpers/chance.js";
 import { generalPaths } from "../../lists/places.js";
 
 export class BrokenDownCart extends Event {
-  name = "Broken Down Cart";
+  static Name = "Broken Down Cart";
+  name = BrokenDownCart.Name;
 
   chance = (state: State): number => {
     if (Checker.isLocation(state, ...generalPaths)) {
@@ -25,35 +26,34 @@ export class BrokenDownCart extends Event {
   }
 
   selectPrompt = "Will you choose to assist a fellow traveller?";
-  choices = [helpFix, leave];
-}
-
-const helpFix: EventChoice = {
-  name: "Help Fix",
-  outcomes: [
+  choices = [
     {
-      name: "Success",
-      async run() {
-        await this.writer.standard("You help fix the cart");
-      },
+      name: "Help Fix",
+      outcomes: [
+        {
+          name: "Success",
+          run: async () => {
+            await this.writer.standard("You help fix the cart");
+          },
+        },
+        {
+          name: "Failure",
+          run: async () => {
+            await this.writer.standard("You are bad at fixing things");
+          },
+        },
+      ],
     },
-    {
-      name: "Failure",
-      async run() {
-        await this.writer.standard("You are bad at fixing things");
-      },
-    },
-  ],
-};
-
-const leave: EventChoice = {
-  name: "Leave",
-  outcomes: [
     {
       name: "Leave",
-      async run() {
-        await this.writer.standard("You leave");
-      },
+      outcomes: [
+        {
+          name: "Leave",
+          run: async () => {
+            await this.writer.standard("You leave");
+          },
+        },
+      ],
     },
-  ],
-};
+  ];
+}

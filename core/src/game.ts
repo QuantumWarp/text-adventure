@@ -14,7 +14,7 @@ export class Game {
   constructor(options: GameOptions) {
     this.state = new State();
     this.writer = new Writer(options.interface);
-    this.events = events.map((E) => new E(this.writer));
+    this.events = events.map((E) => new E(this.writer, this.state));
   }
 
   async run() {
@@ -24,7 +24,7 @@ export class Game {
       this.writeStatus();
 
       const event = chanceSelect(this.events, this.state);
-      const outcome = await event.run(this.state);
+      const outcome = await event.run();
       this.state.journey.add(event, outcome);
     }
 

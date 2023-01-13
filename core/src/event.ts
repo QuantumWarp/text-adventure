@@ -5,45 +5,49 @@ import { Format } from "./helpers/formatter.js";
 import { Writer } from "./writers/writer.js";
 import { State } from "./state/state.js";
 
-export interface Event {
-  chance: Chance;
-  intro?(state: State): Promise<void>;
-  outro?(state: State, outcome: EventOutcome): Promise<void>;
-}
-
 export abstract class Event {
-  abstract name: string;
+  name: string;
 
-  abstract selectPrompt: string;
-  abstract choices: EventChoice[];
+  chance?: Chance = 1;
+  selectPrompt?: string = '';
+  choices?: EventChoice[] = [];
+  defaultOutcomes?: EventOutcome[] = [];
 
-  defaultOutcomes: EventOutcome[] = [];
+  intro?(): Promise<void>;
+  outro?(outcome: EventOutcome): Promise<void>;
 
-  constructor(protected writer: Writer) {}
+  constructor(
+    protected writer: Writer,
+    protected state: State,
+  ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.name = (this.constructor as any).Name;
+    if (!this.name) throw new Error("Provide instance with a static 'Name' property");
+  }
 
-  async run(state: State): Promise<EventOutcome> {
+  async run(): Promise<EventOutcome> {
     this.writer.instant(Format.title(this.name));
     this.writer.gap();
 
     if (this.intro) {
-      await this.intro(state);
+      await this.intro();
       this.writer.gap();
     }
 
     const validOutcomes = [...this.defaultOutcomes];
 
     if (this.choices.length > 0) {
-      const choice = await this.presentChoice(state);
+      const choice = await this.presentChoice();
       validOutcomes.push(...choice.outcomes);
     }
 
-    const outcome = chanceSelect(validOutcomes, state);
+    const outcome = chanceSelect(validOutcomes, this.state);
     this.writer.gap();
 
-    await outcome.run(state);
+    await outcome.run();
 
     if (this.outro) {
-      await this.outro(state, outcome);
+      await this.outro(outcome);
       this.writer.gap();
     }
 
@@ -53,13 +57,13 @@ export abstract class Event {
     return outcome;
   }
 
-  private async presentChoice(state: State): Promise<EventChoice> {
+  private async presentChoice(): Promise<EventChoice> {
     const answer = await inquirer.prompt([
       {
         name: this.selectPrompt,
         type: "list",
         choices: this.choices
-          .filter((x) => !x.condition || x.condition(state))
+          .filter((x) => !x.condition || x.condition())
           .map((x) => x.name),
       },
     ]);
@@ -68,30 +72,14 @@ export abstract class Event {
   }
 }
 
-export interface EventChoice {
+export class EventChoice {
   name: string;
-  condition?(state: State): boolean;
+  condition?: () => boolean;
   outcomes: EventOutcome[];
 }
 
-interface IEventOutcome {
-  name: string;
-  chance?: Chance;
-  run: (state: State) => Promise<void>;
-}
-
 export class EventOutcome {
-
-  constructor(
-    public name: string,
-    public run: (state: State) => Promise<void>,
-    public chance?: Chance,
-  ) { }
+  name: string;
+  run: () => Promise<void>;
+  chance?: Chance;
 }
-
-const test = new EventOutcome(
-  'test',
-  (state: State) => {
-    writ
-  },
-);
