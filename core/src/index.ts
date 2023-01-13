@@ -1,16 +1,19 @@
-import { Game } from "./game.js";
+export { GameInterface } from "./game-interface.js";
+export { Game } from "./game.js";
 
-export { Game };
+// async function run() {
+//   const gameInterface = new GameInterface();
 
-async function run() {
-  const game = new Game({
-    interface: {
-      write: (x) => process.stdout.write(x),
-      handler: (x) => x,
-    },
-  });
-  await game.run();
-  process.exit(0);
-}
+//   gameInterface.onWrite.subscribe((x) => process.stdout.write(x));
 
-run();
+//   process.stdin.setRawMode(true);
+//   process.stdin.on("data", (chunk) => {
+//     gameInterface.onKey.next(chunk.toString());
+//   });
+
+//   const game = new Game(gameInterface);
+//   await game.run();
+//   process.exit(0);
+// }
+
+// run();

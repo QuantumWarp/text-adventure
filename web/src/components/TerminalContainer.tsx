@@ -4,9 +4,9 @@ import ansi from 'ansi-escape-sequences';
 import 'xterm/css/xterm.css';
 import './TerminalContainer.css';
 import { FitAddon } from 'xterm-addon-fit';
-import { Game } from 'text-adventure';
+import { GameInterface } from 'text-adventure';
 
-function TerminalContainer(props: { game: Game }) {
+function TerminalContainer(props: { gameInterface: GameInterface }) {
   const [terminal] = useState(new Terminal({ scrollback: 0 }));
   const terminalRef = useRef<HTMLDivElement>(null);
   const firstRender = useRef(true);
@@ -21,6 +21,7 @@ function TerminalContainer(props: { game: Game }) {
     terminal.open(terminalRef.current);
     fitAddon.fit();
     terminal.write(ansi.cursor.hide);
+    props.gameInterface.onWrite.subscribe((x) => terminal.write(x));
   });
 
   useEffect(() => {

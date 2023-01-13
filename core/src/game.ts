@@ -4,16 +4,16 @@ import { events } from "./lists/events.js";
 import { chanceSelect } from "./helpers/chance.js";
 import { Writer } from "./writers/writer.js";
 import { Format } from "./helpers/formatter.js";
-import { GameOptions } from "./options.js";
+import { GameInterface } from "./game-interface.js";
 
 export class Game {
   events: Event[];
   state: State;
   writer: Writer;
 
-  constructor(options: GameOptions) {
+  constructor(gameInterface: GameInterface) {
     this.state = new State();
-    this.writer = new Writer(options.interface);
+    this.writer = new Writer(gameInterface);
     this.events = events.map((E) => new E(this.writer, this.state));
   }
 

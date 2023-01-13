@@ -1,4 +1,4 @@
-import { Place } from "src/lists/places.js";
+import { Place } from "../lists/places.js";
 import { Event } from "../event.js";
 import { State } from "../state/state.js";
 
@@ -8,9 +8,9 @@ export class Checker {
   }
 
   static isLocation(state: State, ...places: Place[]): boolean {
-    return (
-      places.includes(state.location.current) ||
-      places.includes(state.location.subLocation)
-    );
+    if (places.includes(state.location.current)) return true;
+    if (!state.location.subLocation) return false;
+    if (places.includes(state.location.subLocation)) return true;
+    return false;
   }
 }

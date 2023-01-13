@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import TerminalContainer from './components/TerminalContainer';
 import ImageContainer from './components/ImageContainer';
-import { Game } from 'text-adventure';
+import { Game, GameInterface } from 'text-adventure';
 
 function App() {
-  const [currentGame, setCurrentGame]  = useState<Game>();
+  const [gameInterface, setGameInterface]  = useState<GameInterface>();
 
   const newGame = () => {
-    const game = new Game();
-    setCurrentGame(game);
+    const gi = new GameInterface();
+    const game = new Game(gi);
+    setGameInterface(gi);
     game.run();
   };
 
@@ -19,10 +20,10 @@ function App() {
     <div className="app">
       <h1>Text Adventure</h1>
 
-      {currentGame && (
+      {gameInterface && (
         <>
           <TerminalContainer
-            game={currentGame}
+            gameInterface={gameInterface}
           />
 
           <ImageContainer />

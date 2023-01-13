@@ -1,31 +1,38 @@
 import readline from "readline";
 import ansi from "ansi-escape-sequences";
-import { GameInterface } from "src/options.js";
+import { GameInterface } from "../game-interface.js";
 // import { slowType } from "./slow-type.js";
 
 export class Writer {
-  constructor(private gameInterface: GameInterface) {}
+  constructor(public gameInterface: GameInterface) {
+    this.write(ansi.cursor.hide);
+  }
+
+  write(text: string): void {
+    this.gameInterface.onWrite.next(text);
+  }
 
   async standard(...messages: string[]): Promise<void> {
-    const text = messages.join("\r");
-    this.gameInterface.write(text);
+    const text = messages.join("\r\n");
+    this.write(`${text}\r\n`);
     // for (const message of messages) {
     //   await slowType(message);
     // }
   }
 
   instant(...messages: string[]): void {
-    const text = messages.join("\r");
-    this.gameInterface.write(text);
+    const text = messages.join("\r\n");
+    this.write(`${text}\r\n`);
   }
 
   gap(amount = 1): void {
-    const text = "\r".repeat(amount);
-    this.gameInterface.write(text);
+    const text = "\r\n".repeat(amount);
+    this.write(text);
   }
 
   clear(): void {
-    this.gameInterface.write(ansi.erase.display(2));
+    this.gameInterface.onWrite.next(ansi.erase.display(2));
+    this.gameInterface.onWrite.next(ansi.cursor.position());
   }
 
   async waitForUser() {

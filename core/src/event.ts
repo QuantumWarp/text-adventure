@@ -1,28 +1,26 @@
-/* eslint-disable prettier/prettier */
-import inquirer from "inquirer";
 import { Chance, chanceSelect } from "./helpers/chance.js";
 import { Format } from "./helpers/formatter.js";
 import { Writer } from "./writers/writer.js";
 import { State } from "./state/state.js";
+import Prompt from "./writers/prompt.js";
 
 export abstract class Event {
   name: string;
 
-  chance?: Chance = 1;
-  selectPrompt?: string = '';
-  choices?: EventChoice[] = [];
-  defaultOutcomes?: EventOutcome[] = [];
+  chance: Chance = 1;
+  selectPrompt = "";
+  choices: EventChoice[] = [];
+  defaultOutcomes: EventOutcome[] = [];
 
   intro?(): Promise<void>;
   outro?(outcome: EventOutcome): Promise<void>;
 
-  constructor(
-    protected writer: Writer,
-    protected state: State,
-  ) {
+  constructor(protected writer: Writer, protected state: State) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.name = (this.constructor as any).Name;
-    if (!this.name) throw new Error("Provide instance with a static 'Name' property");
+    if (!this.name) {
+      throw new Error("Provide instance with a static 'Name' property");
+    }
   }
 
   async run(): Promise<EventOutcome> {
@@ -58,27 +56,28 @@ export abstract class Event {
   }
 
   private async presentChoice(): Promise<EventChoice> {
-    const answer = await inquirer.prompt([
-      {
-        name: this.selectPrompt,
-        type: "list",
-        choices: this.choices
-          .filter((x) => !x.condition || x.condition())
-          .map((x) => x.name),
-      },
-    ]);
+    const prompt = new Prompt(
+      this.writer,
+      this.selectPrompt,
+      this.choices
+        .filter((x) => !x.condition || x.condition())
+        .map((x) => x.name)
+    );
+    const answer = await prompt.run();
 
-    return this.choices.find((x) => x.name === answer[this.selectPrompt]);
+    const choice = this.choices.find((x) => x.name === answer);
+    if (!choice) throw new Error("Invalid choice");
+    return choice;
   }
 }
 
-export class EventChoice {
+export interface EventChoice {
   name: string;
   condition?: () => boolean;
   outcomes: EventOutcome[];
 }
 
-export class EventOutcome {
+export interface EventOutcome {
   name: string;
   run: () => Promise<void>;
   chance?: Chance;

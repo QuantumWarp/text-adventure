@@ -4,8 +4,8 @@ export class Location {
   history: Place[] = [];
 
   current: Place = places.village;
-  to: Place;
-  subLocation: Place;
+  to?: Place;
+  subLocation?: Place;
 
   set(current: Place, to?: Place): void {
     if (this.subLocation) {

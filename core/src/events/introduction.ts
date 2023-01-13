@@ -1,9 +1,9 @@
-import inquirer from "inquirer";
 import { State } from "../state/state.js";
 import { Event } from "../event.js";
 import { places, placeStyle } from "../lists/places.js";
 import { Checker } from "../helpers/checker.js";
 import { ChanceVal } from "../helpers/chance.js";
+import Prompt from "../writers/prompt.js";
 
 export class Introduction extends Event {
   static Name = "The Road to Adventure";
@@ -28,29 +28,36 @@ export class Introduction extends Event {
     );
     this.writer.gap();
 
-    const { name, gender, background } = await inquirer.prompt([
-      {
-        name: "name",
-        message: "What is your name?",
-        type: "input",
-      },
-      {
-        name: "gender",
-        type: "list",
-        message: "What is your gender?",
-        choices: ["Male", "Female", "Other"],
-      },
-      {
-        name: "background",
-        type: "list",
-        message: "What is your background?",
-        choices: ["Archer", "Spellcaster", "Swordsman"],
-      },
+    const genderPrompt = new Prompt(this.writer, "What is your gender?", [
+      "Male",
+      "Female",
+      "Other",
     ]);
+    const gender = await genderPrompt.run();
 
-    this.state.basics.name = name;
+    // const { name, gender, background } = await inquirer.prompt([
+    //   {
+    //     name: "name",
+    //     message: "What is your name?",
+    //     type: "input",
+    //   },
+    //   {
+    //     name: "gender",
+    //     type: "list",
+    //     message: "What is your gender?",
+    //     choices: ["Male", "Female", "Other"],
+    //   },
+    //   {
+    //     name: "background",
+    //     type: "list",
+    //     message: "What is your background?",
+    //     choices: ["Archer", "Spellcaster", "Swordsman"],
+    //   },
+    // ]);
+
+    // this.state.basics.name = name;
     this.state.basics.gender = gender;
-    this.state.basics.background = background;
+    // this.state.basics.background = background;
 
     this.writer.gap();
     await this.writer.standard(

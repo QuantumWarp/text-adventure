@@ -57,5 +57,5 @@ const checkComparableChances = <T>(
     return cumulative > rand;
   });
 
-  return selected.result;
+  return selected ? selected.result : chances[0].result;
 };
