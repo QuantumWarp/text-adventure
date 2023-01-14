@@ -7,7 +7,14 @@ import { FitAddon } from 'xterm-addon-fit';
 import { GameInterface } from '../core';
 
 function TerminalContainer(props: { gameInterface: GameInterface }) {
-  const [terminal] = useState(new Terminal({ scrollback: 0 }));
+  const [terminal] = useState(new Terminal({
+    scrollback: 0,
+    fontFamily: 'Consolas, "Courier New", monospace',
+    fontSize: 14,
+    theme: {
+      background: '#1e1e1e'
+    }
+  }));
   const terminalRef = useRef<HTMLDivElement>(null);
   const firstRender = useRef(true);
 
