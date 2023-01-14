@@ -1,6 +1,6 @@
 import ansi from "ansi-escape-sequences";
 import { GameInterface } from "../game-interface.js";
-// import { slowType } from "./slow-type.js";
+import { slowType } from "./slow-type.js";
 
 export class Writer {
   constructor(public gameInterface: GameInterface) {
@@ -12,11 +12,9 @@ export class Writer {
   }
 
   async standard(...messages: string[]): Promise<void> {
-    const text = messages.join("\r\n");
-    this.write(`${text}\r\n`);
-    // for (const message of messages) {
-    //   await slowType(message);
-    // }
+    for (const message of messages) {
+      await slowType(this.gameInterface, message);
+    }
   }
 
   instant(...messages: string[]): void {
@@ -35,15 +33,11 @@ export class Writer {
   }
 
   async waitForUser() {
-    // const rl = readline.createInterface({
-    //   input: process.stdin,
-    //   output: process.stdout,
-    // });
-    // return new Promise<void>((resolve) =>
-    //   rl.question("", () => {
-    //     rl.close();
-    //     resolve();
-    //   })
-    // );
+    return new Promise<void>((resolve) => {
+      const subscription = this.gameInterface.onKey.subscribe(() => {
+        resolve();
+        subscription.unsubscribe();
+      });
+    });
   }
 }

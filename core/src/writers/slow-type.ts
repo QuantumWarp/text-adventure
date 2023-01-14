@@ -1,48 +1,50 @@
 import ansiRegex from "ansi-regex";
+import { GameInterface } from "../game-interface.js";
 import { sleep } from "../helpers/utils.js";
 
 export async function slowType(
+  gameInterface: GameInterface,
   message: string,
-  characterDelay = 4,
+  characterDelay = 10,
   eolDelay = 500
 ): Promise<void> {
   let leftToType = message + "\r\n";
   let skipped = false;
 
   const writeRemainder = () => {
-    process.stdout.write(leftToType);
+    gameInterface.onWrite.next(leftToType);
     leftToType = "";
     skipped = true;
   };
 
-  process.stdin.resume();
-  process.stdin.setRawMode(true);
-  process.stdin.once("data", writeRemainder);
+  const subscription = gameInterface.onKey.subscribe(() => writeRemainder());
 
   while (leftToType.length > 0) {
-    leftToType = writeAnsiChars(leftToType);
+    leftToType = writeAnsiChars(gameInterface, leftToType);
 
     const nextCharacter = leftToType[0];
     leftToType = leftToType.slice(1);
-    process.stdout.write(nextCharacter);
+    gameInterface.onWrite.next(nextCharacter);
     await sleep(characterDelay);
 
-    leftToType = writeAnsiChars(leftToType);
+    leftToType = writeAnsiChars(gameInterface, leftToType);
   }
+
+  subscription.unsubscribe();
 
   if (!skipped) {
     await sleep(eolDelay);
   }
 }
 
-function writeAnsiChars(message: string): string {
+function writeAnsiChars(gameInterface: GameInterface, message: string): string {
   let leftToType = message;
   let start = "";
 
   do {
     start = startingCharacters(leftToType);
     leftToType = leftToType.slice(start.length);
-    process.stdout.write(start);
+    gameInterface.onWrite.next(start);
   } while (start !== "");
 
   return leftToType;
