@@ -1,4 +1,5 @@
 import ansi from "ansi-escape-sequences";
+import styles from "ansi-styles";
 import { Writer } from "./writer.js";
 
 export default class Prompt {
@@ -47,8 +48,9 @@ export default class Prompt {
     this.writer.write(clearPrompt);
 
     const selectedOption = this.choices[this.selectedIndex];
+    const styledOption = styles.blue.open + selectedOption + styles.blue.close;
 
-    this.writer.instant(`${this.message} -> ${selectedOption}`);
+    this.writer.instant(`${this.message} -> ${styledOption}`);
     return selectedOption;
   }
 

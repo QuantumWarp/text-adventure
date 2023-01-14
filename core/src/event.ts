@@ -24,6 +24,7 @@ export abstract class Event {
   }
 
   async run(): Promise<EventOutcome> {
+    this.writer.gameInterface.onGameEvent.next({ event: this });
     this.writer.instant(Format.title(this.name));
     this.writer.gap();
 
@@ -49,6 +50,7 @@ export abstract class Event {
       this.writer.gap();
     }
 
+    this.writer.gameInterface.onGameEvent.next({ event: this, outcome });
     await this.writer.waitForUser();
     this.writer.clear();
 

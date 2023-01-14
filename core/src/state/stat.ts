@@ -15,6 +15,14 @@ export class Stat {
     private _maximum?: number
   ) {}
 
+  add(amount: number): void {
+    this.setValue(this._value + amount);
+  }
+
+  remove(amount: number): void {
+    this.setValue(this._value - amount);
+  }
+
   setValue(newValue: number): void {
     this._value = newValue;
     this.adjust();

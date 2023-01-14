@@ -1,3 +1,5 @@
+import styles from "ansi-styles";
+
 export const places = {
   village: "Village",
   theMountains: "The Mountains",
@@ -19,7 +21,7 @@ export const generalPaths = [
 ];
 
 export const placeStyle = (x: string) => {
-  return x;
+  return styles.magenta.open + x + styles.magenta.close;
 };
 
 type Keys = keyof typeof places;
