@@ -1,5 +1,3 @@
-import chalk from "chalk";
-
 export const places = {
   village: "Village",
   theMountains: "The Mountains",
@@ -21,7 +19,7 @@ export const generalPaths = [
 ];
 
 export const placeStyle = (x: string) => {
-  return chalk.magenta(x);
+  return x;
 };
 
 type Keys = keyof typeof places;

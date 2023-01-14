@@ -1,9 +1,7 @@
-import chalk from "chalk";
-
 const characters = {} as const;
 
 export const characterStyle = (x: string) => {
-  return chalk.yellow(x);
+  return x;
 };
 
 type Keys = keyof typeof characters;

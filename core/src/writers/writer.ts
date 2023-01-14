@@ -1,4 +1,3 @@
-import readline from "readline";
 import ansi from "ansi-escape-sequences";
 import { GameInterface } from "../game-interface.js";
 // import { slowType } from "./slow-type.js";
@@ -36,16 +35,15 @@ export class Writer {
   }
 
   async waitForUser() {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    return new Promise<void>((resolve) =>
-      rl.question("", () => {
-        rl.close();
-        resolve();
-      })
-    );
+    // const rl = readline.createInterface({
+    //   input: process.stdin,
+    //   output: process.stdout,
+    // });
+    // return new Promise<void>((resolve) =>
+    //   rl.question("", () => {
+    //     rl.close();
+    //     resolve();
+    //   })
+    // );
   }
 }

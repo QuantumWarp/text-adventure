@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import styles from "ansi-styles";
 import { removeAnsi } from "./utils.js";
 
 export class Format {
@@ -16,7 +16,7 @@ export class Format {
       title =
         "-".repeat(dashCount + (odd ? 1 : 0)) + title + "-".repeat(dashCount);
     }
-    return chalk.bold.blue(`---${title}---`);
+    return styles.blue.open + `---${title}---` + styles.blue.close;
   }
 
   static fixedWidth(text: string, width = 20): string {

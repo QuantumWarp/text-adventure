@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import TerminalContainer from './components/TerminalContainer';
 import ImageContainer from './components/ImageContainer';
-import { Game, GameInterface } from 'text-adventure';
+import { Game, GameInterface } from './core';
 
 function App() {
   const [gameInterface, setGameInterface]  = useState<GameInterface>();
@@ -11,7 +11,7 @@ function App() {
     const gi = new GameInterface();
     const game = new Game(gi);
     setGameInterface(gi);
-    game.run();
+    setTimeout(() => game.run(), 1000);
   };
 
   useEffect(() => { newGame(); }, []);
