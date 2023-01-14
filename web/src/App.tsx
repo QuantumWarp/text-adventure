@@ -26,7 +26,9 @@ function App() {
             gameInterface={gameInterface}
           />
 
-          <ImageContainer />
+          <ImageContainer
+            gameInterface={gameInterface}
+          />
         </>
       )}
     </div>

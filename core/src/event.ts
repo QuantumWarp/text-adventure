@@ -43,6 +43,8 @@ export abstract class Event {
     const outcome = chanceSelect(validOutcomes, this.state);
     this.writer.gap();
 
+    this.writer.gameInterface.onGameEvent.next({ event: this, outcome });
+
     await outcome.run();
 
     if (this.outro) {
@@ -50,7 +52,6 @@ export abstract class Event {
       this.writer.gap();
     }
 
-    this.writer.gameInterface.onGameEvent.next({ event: this, outcome });
     await this.writer.waitForUser();
     this.writer.clear();
 
