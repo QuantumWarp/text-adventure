@@ -2,11 +2,11 @@
   "name": "text-adventure",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/index.ts",
+  "main": "./src/runner.ts",
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node ./src/index.ts"
+    "start": "ts-node ./src/runner.ts"
   },
   "author": "",
   "license": "ISC",
