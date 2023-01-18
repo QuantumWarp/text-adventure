@@ -8,12 +8,14 @@ async function run() {
 
   process.stdin.setRawMode(true);
   process.stdin.on("data", (chunk) => {
-    gameInterface.onKey.next(chunk.toString());
+    if (chunk.toString() === "\u0003") {
+      process.exit(0);
+    }
+    gameInterface.keypress(chunk.toString());
   });
 
   const game = new Game(gameInterface);
   await game.run();
-  process.exit(0);
 }
 
 run();

@@ -2,7 +2,7 @@ import { Chance, chanceSelect } from "./helpers/chance.js";
 import { Format } from "./helpers/formatter.js";
 import { Writer } from "./writers/writer.js";
 import { State } from "./state/state.js";
-import Prompt from "./writers/prompt.js";
+import { Prompt } from "./writers/prompt.js";
 
 export abstract class GameEvent {
   name: string;

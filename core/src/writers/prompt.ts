@@ -2,7 +2,7 @@ import ansi from "ansi-escape-sequences";
 import styles from "ansi-styles";
 import { Writer } from "./writer.js";
 
-export default class Prompt {
+export class Prompt {
   private selectedIndex = 0;
 
   constructor(
