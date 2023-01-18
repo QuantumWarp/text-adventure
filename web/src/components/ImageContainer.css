@@ -1,6 +1,7 @@
 .image-container {
   margin-top: 50px;
   height: 40vh;
-  width: 800px;
-  border: 1px solid black;
+  width: 512px;
+  object-fit: cover;
+  border-radius: 8px;
 }

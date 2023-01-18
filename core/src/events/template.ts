@@ -1,9 +1,9 @@
 import { State } from "../state/state.js";
-import { Event } from "../event.js";
+import { GameEvent } from "../game-event.js";
 import { Checker } from "../helpers/checker.js";
 import { ChanceVal } from "../helpers/chance.js";
 
-export class Template extends Event {
+export class Template extends GameEvent {
   static Name = "Template to Copy";
   static Choice = {
     DoSomething: "Do Something",

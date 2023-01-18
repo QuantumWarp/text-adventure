@@ -8,7 +8,7 @@ export class Writer {
   }
 
   write(text: string): void {
-    this.gameInterface.onWrite.next(text);
+    this.gameInterface.write(text);
   }
 
   async standard(...messages: string[]): Promise<void> {
@@ -28,8 +28,8 @@ export class Writer {
   }
 
   clear(): void {
-    this.gameInterface.onWrite.next(ansi.erase.display(2));
-    this.gameInterface.onWrite.next(ansi.cursor.position());
+    this.gameInterface.write(ansi.erase.display(2));
+    this.gameInterface.write(ansi.cursor.position());
   }
 
   async waitForUser() {

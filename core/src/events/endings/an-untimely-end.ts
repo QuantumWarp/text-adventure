@@ -1,7 +1,7 @@
 import { State } from "../../state/state.js";
-import { Event } from "../../event.js";
+import { GameEvent } from "../../game-event.js";
 
-export class AnUntimelyEnd extends Event {
+export class AnUntimelyEnd extends GameEvent {
   name = "An Untimely End";
 
   chance = (state: State): number => {

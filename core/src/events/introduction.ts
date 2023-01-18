@@ -1,11 +1,11 @@
 import { State } from "../state/state.js";
-import { Event } from "../event.js";
+import { GameEvent } from "../game-event.js";
 import { places, placeStyle } from "../lists/places.js";
 import { Checker } from "../helpers/checker.js";
 import { ChanceVal } from "../helpers/chance.js";
 import Prompt from "../writers/prompt.js";
 
-export class Introduction extends Event {
+export class Introduction extends GameEvent {
   static Name = "The Road to Adventure";
   static Choice = {
     North: "North",

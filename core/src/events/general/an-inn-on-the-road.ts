@@ -1,10 +1,10 @@
 import { State } from "../../state/state.js";
-import { Event } from "../../event.js";
+import { GameEvent } from "../../game-event.js";
 import { Checker } from "../../helpers/checker.js";
 import { ChanceVal } from "../../helpers/chance.js";
 import { generalPaths } from "../../lists/places.js";
 
-export class AnInnOnTheRoad extends Event {
+export class AnInnOnTheRoad extends GameEvent {
   static Name = "An Inn on the Road";
   static Choice = {
     RestOvernight: "Rest Overnight",

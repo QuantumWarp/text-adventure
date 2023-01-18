@@ -1,5 +1,5 @@
 import { State } from "./state/state.js";
-import { Event } from "./event.js";
+import { GameEvent } from "./game-event.js";
 import { events } from "./lists/events.js";
 import { chanceSelect } from "./helpers/chance.js";
 import { Writer } from "./writers/writer.js";
@@ -7,7 +7,7 @@ import { Format } from "./helpers/formatter.js";
 import { GameInterface } from "./game-interface.js";
 
 export class Game {
-  events: Event[];
+  events: GameEvent[];
   state: State;
   writer: Writer;
 

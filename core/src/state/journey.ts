@@ -1,9 +1,9 @@
-import { Event, EventOutcome } from "../event.js";
+import { GameEvent, EventOutcome } from "../game-event.js";
 
 export class Journey {
-  history: { event: Event; outcome: EventOutcome }[] = [];
+  history: { event: GameEvent; outcome: EventOutcome }[] = [];
 
-  add(event: Event, outcome: EventOutcome): void {
+  add(event: GameEvent, outcome: EventOutcome): void {
     this.history.push({ event, outcome });
   }
 

@@ -5,15 +5,19 @@ import './ImageContainer.css';
 function ImageContainer(props: { gameInterface: GameInterface }) {
   const [imageName, setImageName] = useState('');
 
-  props.gameInterface.onGameEvent.subscribe(({ event, outcome }) => {
-    const name = event.name.replace(/\s/g, '-') + (outcome ? `-${outcome.name.replace(/\s/g, '-')}` : '');
-    setImageName(`images/${name.toLowerCase()}.jpeg`);
-  })
+  props.gameInterface.onGameEvent.subscribe((event) => {
+    const imagePath = `images/${event}.jpeg`;
+    const img = new Image();
+    img.onload = () => setImageName(imagePath);
+    img.src = imagePath;
+  });
 
   return (
-    <div className="image-container">
-      <img src={imageName} alt={imageName}></img>
-    </div>
+    <img
+      className="image-container"
+      src={imageName}
+      alt={imageName}
+    ></img>
   );
 }
 

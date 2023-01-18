@@ -4,7 +4,7 @@ import { Writer } from "./writers/writer.js";
 import { State } from "./state/state.js";
 import Prompt from "./writers/prompt.js";
 
-export abstract class Event {
+export abstract class GameEvent {
   name: string;
 
   chance: Chance = 1;
@@ -24,11 +24,11 @@ export abstract class Event {
   }
 
   async run(): Promise<EventOutcome> {
-    this.writer.gameInterface.onGameEvent.next({ event: this });
     this.writer.instant(Format.title(this.name));
     this.writer.gap();
 
     if (this.intro) {
+      this.writer.gameInterface.sendEvent(this, "intro");
       await this.intro();
       this.writer.gap();
     }
@@ -36,18 +36,18 @@ export abstract class Event {
     const validOutcomes = [...this.defaultOutcomes];
 
     if (this.choices.length > 0) {
+      this.writer.gameInterface.sendEvent(this, "choice");
       const choice = await this.presentChoice();
       validOutcomes.push(...choice.outcomes);
     }
 
     const outcome = chanceSelect(validOutcomes, this.state);
     this.writer.gap();
-
-    this.writer.gameInterface.onGameEvent.next({ event: this, outcome });
-
+    this.writer.gameInterface.sendEvent(this, outcome.name);
     await outcome.run();
 
     if (this.outro) {
+      this.writer.gameInterface.sendEvent(this, "outro");
       await this.outro(outcome);
       this.writer.gap();
     }

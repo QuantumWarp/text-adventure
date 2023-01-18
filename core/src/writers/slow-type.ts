@@ -12,7 +12,7 @@ export async function slowType(
   let skipped = false;
 
   const writeRemainder = () => {
-    gameInterface.onWrite.next(leftToType);
+    gameInterface.write(leftToType);
     leftToType = "";
     skipped = true;
   };
@@ -24,7 +24,7 @@ export async function slowType(
 
     const nextCharacter = leftToType[0];
     leftToType = leftToType.slice(1);
-    gameInterface.onWrite.next(nextCharacter);
+    gameInterface.write(nextCharacter);
     await sleep(characterDelay);
 
     leftToType = writeAnsiChars(gameInterface, leftToType);
@@ -44,7 +44,7 @@ function writeAnsiChars(gameInterface: GameInterface, message: string): string {
   do {
     start = startingCharacters(leftToType);
     leftToType = leftToType.slice(start.length);
-    gameInterface.onWrite.next(start);
+    gameInterface.write(start);
   } while (start !== "");
 
   return leftToType;

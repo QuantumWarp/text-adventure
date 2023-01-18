@@ -1,9 +1,9 @@
 import { Place } from "../lists/places.js";
-import { Event } from "../event.js";
+import { GameEvent } from "../game-event.js";
 import { State } from "../state/state.js";
 
 export class Checker {
-  static isRepeat(state: State, event: Event): boolean {
+  static isRepeat(state: State, event: GameEvent): boolean {
     return state.journey.visited(event.name);
   }
 

@@ -1,10 +1,10 @@
 import { State } from "../../state/state.js";
-import { Event } from "../../event.js";
+import { GameEvent } from "../../game-event.js";
 import { Checker } from "../../helpers/checker.js";
 import { ChanceVal } from "../../helpers/chance.js";
 import { generalPaths } from "../../lists/places.js";
 
-export class BrokenDownCart extends Event {
+export class BrokenDownCart extends GameEvent {
   static Name = "Broken Down Cart";
   name = BrokenDownCart.Name;
 
