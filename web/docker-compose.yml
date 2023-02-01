@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  web:
+    container_name: 'text-adventure'
+    build: .
+    restart: unless-stopped
+
+networks:
+  default:
+    external: true
+    name: proxy
